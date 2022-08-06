@@ -1,0 +1,14 @@
+<h1>My To Do List</h1>
+
+<table>
+    <tr>
+        <th>Item</th>
+    </tr>
+    {% for task in tasks %}
+    <tr>
+        <td>{{ task.title }}</td>     <!--     { % for task in object_list % } -> from class TaskList(ListView) from base/tasklist    -->
+    </tr>
+    {% empty %}
+    <h3>No item in list</h3>
+    {% endfor %}
+</table>
