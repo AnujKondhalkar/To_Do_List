@@ -5,11 +5,14 @@
     <tr>
         <th>Item</th>
         <th></th>
+        <th></th>
     </tr>
     {% for task in tasks %}
     <tr>
         <td>{{ task.title }}</td>     <!--     { % for task in object_list % } -> from class TaskList(ListView) from base/task list    -->
         <td><a href="{% url 'task' task.id %}">View</a></td>
+        <td><a href="{% url 'task-update' task.id %}">Edit</a></td>
+
     </tr>
     {% empty %}
     <h3>No item in list</h3>
