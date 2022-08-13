@@ -20,6 +20,7 @@ class CustomLoginView(LoginView):
     redirect_authenticated_user = True
 
     def get_success_url(self):
+        # this method triggered automatically on post request
         return reverse_lazy('tasks')
 
 
@@ -29,6 +30,15 @@ class TaskList(LoginRequiredMixin, ListView):
     # represent query list i.e. tasks it will go
     # to task_list.html as object_list
     context_object_name = 'tasks'
+
+    # user can't see other users data , can see only his
+    # it is automatically triggered
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['tasks'] = context['tasks'].filter(user=self.request.user)
+        context['count'] = context['tasks'].filter(complete=False).count()
+
+        return context
 
 
 class TaskDetail(LoginRequiredMixin, DetailView):
@@ -41,13 +51,20 @@ class TaskDetail(LoginRequiredMixin, DetailView):
 
 class TaskCreate(LoginRequiredMixin, CreateView):
     model = Task
-    fields = '__all__'  # e.g. ['title','description']
+    # fields = '__all__'  # e.g. ['title','description']
+    fields = ['title', 'description', 'complete']
     success_url = reverse_lazy('tasks')  # 'tasks is url name'
+
+    def form_valid(self, form):
+        # it is automatically triggered on post request
+        form.instance.user = self.request.user
+        return super(TaskCreate, self).form_valid(form)
 
 
 class TaskUpdate(LoginRequiredMixin, UpdateView):
     model = Task
-    fields = '__all__'  # e.g. ['title','description']
+    # fields = '__all__'  # e.g. ['title','description']
+    fields = ['title', 'description', 'complete']
     success_url = reverse_lazy('tasks')  # 'tasks is url name'
 
 
