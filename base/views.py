@@ -6,9 +6,12 @@ from django.urls import reverse_lazy
 
 from django.contrib.auth.views import LoginView
 
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 from .models import Task
 
 # 'tasks' is main page
+
 
 class CustomLoginView(LoginView):
     template_name = 'base/login.html'
@@ -20,7 +23,7 @@ class CustomLoginView(LoginView):
         return reverse_lazy('tasks')
 
 
-class TaskList(ListView):
+class TaskList(LoginRequiredMixin, ListView):
     # it will be rendered to html
     model = Task  # the db classes we have made in models.py and those were migrated
     # represent query list i.e. tasks it will go
@@ -28,7 +31,7 @@ class TaskList(ListView):
     context_object_name = 'tasks'
 
 
-class TaskDetail(DetailView):
+class TaskDetail(LoginRequiredMixin, DetailView):
     # it will be rendered to html
     model = Task
     context_object_name = 'task'
@@ -36,19 +39,19 @@ class TaskDetail(DetailView):
     # normally task_detail.hmtl name is made as Task from model name and detail from this class name
 
 
-class TaskCreate(CreateView):
+class TaskCreate(LoginRequiredMixin, CreateView):
     model = Task
     fields = '__all__'  # e.g. ['title','description']
     success_url = reverse_lazy('tasks')  # 'tasks is url name'
 
 
-class TaskUpdate(UpdateView):
+class TaskUpdate(LoginRequiredMixin, UpdateView):
     model = Task
     fields = '__all__'  # e.g. ['title','description']
     success_url = reverse_lazy('tasks')  # 'tasks is url name'
 
 
-class TaskDelete(DeleteView):
+class TaskDelete(LoginRequiredMixin, DeleteView):
     model = Task
     fields = '__all__'  # e.g. ['title','description']
     success_url = reverse_lazy('tasks')  # 'tasks is url name'
