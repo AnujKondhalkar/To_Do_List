@@ -114,6 +114,9 @@ USE_L10N = True
 
 USE_TZ = True
 
+
+# The URL or named URL pattern where requests are redirected for login when using the
+# login_required() decorator, LoginRequiredMixin, or AccessMixin.
 LOGIN_URL = 'login' #user will redirected to login page in not logged in
 
 # Static files (CSS, JavaScript, Images)
