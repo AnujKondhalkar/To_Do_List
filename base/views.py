@@ -58,9 +58,18 @@ class TaskList(LoginRequiredMixin, ListView):
     # it is automatically triggered
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)  # got context data from user class
-        context['tasks'] = context['tasks'].filter(
-            user=self.request.user)  # filter only current user data
+        # filter only current user data
+        context['tasks'] = context['tasks'].filter(user=self.request.user)
         context['count'] = context['tasks'].filter(complete=False).count()
+
+        # search area
+        search_input = self.request.GET.get('search-area') or ''
+        if search_input:
+            context['tasks'] = context['tasks'].filter(
+                # title__icontains=search_input) if the searched word is contained there any word from a string in a given list of tasks
+                title__startswith=search_input) # only for first word in string of given list of tasks
+
+        context['search_input'] = search_input # the given input text will be at search bar
 
         return context
 
