@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'base.apps.BaseConfig',
+
 ]
 
 MIDDLEWARE = [
@@ -117,9 +118,13 @@ USE_TZ = True
 
 # The URL or named URL pattern where requests are redirected for login when using the
 # login_required() decorator, LoginRequiredMixin, or AccessMixin.
-LOGIN_URL = 'login' #user will redirected to login page in not logged in
+LOGIN_URL = 'login'  # user will redirected to login page in not logged in
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR,'static')
+]
